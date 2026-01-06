@@ -166,15 +166,18 @@ dotnet build
 
 ## Troubleshooting
 
-### Renderer fallback
-The game automatically detects your graphics capabilities:
-1. **Forward+** (Vulkan/D3D12) - Modern GPUs, soft shadows, best quality
-2. **OpenGL 3.3** - Automatic fallback for older GPUs
+### Renderer settings
+The project uses `gl_compatibility` (OpenGL 3.3) by default for maximum compatibility.
 
-No manual configuration needed - it just works!
+**For modern GPUs with Vulkan/D3D12 support:**
+Edit `project.godot` and change:
+```
+renderer/rendering_method="forward_plus"
+```
+This enables soft shadows and better visual quality.
 
 ### Shadows look sharp
-Soft shadows require the Forward+ renderer (Vulkan/D3D12). With `gl_compatibility`, shadows will be sharp.
+Soft shadows require the Forward+ renderer (Vulkan/D3D12). With `gl_compatibility`, shadows will be sharp but the game runs on older hardware.
 
 ### Game runs slowly
 Try reducing the shadow quality in `project.godot`:
