@@ -166,8 +166,12 @@ dotnet build
 
 ## Troubleshooting
 
-### "Forward+" renderer not working
-If you have an older graphics card without Vulkan/DirectX 12 support, the project uses `gl_compatibility` mode which works with OpenGL 3.3+.
+### Renderer fallback
+The game automatically detects your graphics capabilities:
+1. **Forward+** (Vulkan/D3D12) - Modern GPUs, soft shadows, best quality
+2. **OpenGL 3.3** - Automatic fallback for older GPUs
+
+No manual configuration needed - it just works!
 
 ### Shadows look sharp
 Soft shadows require the Forward+ renderer (Vulkan/D3D12). With `gl_compatibility`, shadows will be sharp.
