@@ -1,0 +1,102 @@
+[gd_scene load_steps=24 format=3 uid="uid://b0uw1jkq8hxmv"]
+
+[ext_resource type="PackedScene" uid="uid://bsgvk7c3e6qih" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://dv8mp2jqf6hsp" path="res://scenes/world/terrain.tscn" id="2_terrain"]
+[ext_resource type="PackedScene" uid="uid://bq1pfhq0u0ov6" path="res://scenes/world/environment.tscn" id="3_environment"]
+[ext_resource type="PackedScene" uid="uid://c47n7qv6d21je" path="res://ui/hud.tscn" id="4_hud"]
+[ext_resource type="Script" uid="uid://cd7qo0beisob8" path="res://scripts/GameManager.cs" id="5_manager"]
+[ext_resource type="Script" uid="uid://52hqjkmncd2w" path="res://scripts/systems/ForestGenerator.cs" id="6_forest"]
+[ext_resource type="PackedScene" path="res://scenes/world/tree.tscn" id="7_tree"]
+[ext_resource type="PackedScene" path="res://scenes/world/bush.tscn" id="8_bush"]
+[ext_resource type="PackedScene" path="res://scenes/world/pine_tree.tscn" id="8_pine"]
+[ext_resource type="Script" uid="uid://d28mge6ulf285" path="res://scripts/systems/AnimalSpawner.cs" id="9_animals"]
+[ext_resource type="PackedScene" path="res://scenes/animals/deer.tscn" id="10_deer"]
+[ext_resource type="PackedScene" path="res://scenes/animals/wolf.tscn" id="11_wolf"]
+[ext_resource type="PackedScene" path="res://scenes/animals/rabbit.tscn" id="12_rabbit"]
+[ext_resource type="PackedScene" path="res://scenes/animals/elephant.tscn" id="13_elephant"]
+[ext_resource type="PackedScene" path="res://scenes/world/apple_tree.tscn" id="14_apple"]
+[ext_resource type="PackedScene" path="res://scenes/world/banana_tree.tscn" id="15_banana"]
+[ext_resource type="PackedScene" path="res://scenes/world/berry_bush.tscn" id="16_berry"]
+[ext_resource type="PackedScene" path="res://scenes/resources/campfire.tscn" id="17_campfire"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wreck"]
+size = Vector3(3, 2, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wreck"]
+albedo_color = Color(0.3, 0.3, 0.35, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_wing"]
+size = Vector3(5, 0.2, 2)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_shared"]
+noise_type = 4
+seed = 42
+frequency = 0.008
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_shared"]
+noise = SubResource("FastNoiseLite_shared")
+seamless = true
+seamless_blend_skirt = 0.2
+
+[node name="Main" type="Node3D"]
+script = ExtResource("5_manager")
+
+[node name="Terrain" parent="." instance=ExtResource("2_terrain")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05772826, -0.18547265, 0.035700202)
+
+[node name="Environment" parent="." instance=ExtResource("3_environment")]
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="SpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="PlaneCrash" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -10)
+
+[node name="WreckBody" type="MeshInstance3D" parent="PlaneCrash"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wreck")
+surface_material_override/0 = SubResource("StandardMaterial3D_wreck")
+
+[node name="Wing1" type="MeshInstance3D" parent="PlaneCrash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -1)
+mesh = SubResource("BoxMesh_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_wreck")
+
+[node name="Wing2" type="MeshInstance3D" parent="PlaneCrash"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, -5, 0.5, 2)
+mesh = SubResource("BoxMesh_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_wreck")
+
+[node name="ForestGenerator" type="Node3D" parent="."]
+script = ExtResource("6_forest")
+TreeScene = ExtResource("7_tree")
+PineTreeScene = ExtResource("8_pine")
+BushScene = ExtResource("8_bush")
+AppleTreeScene = ExtResource("14_apple")
+BananaTreeScene = ExtResource("15_banana")
+BerryBushScene = ExtResource("16_berry")
+NoiseTexture = SubResource("NoiseTexture2D_shared")
+
+[node name="AnimalSpawner" type="Node3D" parent="."]
+script = ExtResource("9_animals")
+DeerScene = ExtResource("10_deer")
+WolfScene = ExtResource("11_wolf")
+RabbitScene = ExtResource("12_rabbit")
+ElephantScene = ExtResource("13_elephant")
+DeerCount = 12
+WolfCount = 4
+RabbitCount = 20
+SpawnRadius = 180.0
+MinDistanceFromCenter = 35.0
+NoiseTexture = SubResource("NoiseTexture2D_shared")
+
+[node name="Campfire" parent="." instance=ExtResource("17_campfire")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 5)

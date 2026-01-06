@@ -1,0 +1,120 @@
+[gd_scene load_steps=10 format=3 uid="uid://campfire_scene"]
+
+[ext_resource type="Script" path="res://scripts/resources/Campfire.cs" id="1_campfire"]
+[ext_resource type="Resource" uid="uid://cooked_meat_item" path="res://resources/items/cooked_meat.tres" id="2_cooked"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_base"]
+height = 0.3
+radius = 0.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_warmth"]
+radius = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rocks"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.4, 0.25, 0.15, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rock"]
+top_radius = 0.15
+bottom_radius = 0.2
+height = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_log"]
+top_radius = 0.06
+bottom_radius = 0.08
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fire"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.5, 0.1, 0.8)
+emission_enabled = true
+emission = Color(1, 0.4, 0.1, 1)
+emission_energy_multiplier = 3.0
+
+[node name="Campfire" type="StaticBody3D"]
+collision_layer = 4
+script = ExtResource("1_campfire")
+CookedMeatItem = ExtResource("2_cooked")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("CylinderShape3D_base")
+
+[node name="Rock1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0, 0.42)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0, 0.42)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0, -0.42)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Rock8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0, -0.42)
+mesh = SubResource("CylinderMesh_rock")
+surface_material_override/0 = SubResource("StandardMaterial3D_rocks")
+
+[node name="Log1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0.15, 0.1, 0)
+mesh = SubResource("CylinderMesh_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="Log2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -0.15, 0.1, 0.1)
+mesh = SubResource("CylinderMesh_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="Log3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.1)
+mesh = SubResource("CylinderMesh_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="FireParticles" type="GpuParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+emitting = false
+amount = 50
+lifetime = 0.8
+visibility_aabb = AABB(-2, -2, -2, 4, 4, 4)
+
+[node name="FireLight" type="OmniLight3D" parent="."]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+light_color = Color(1, 0.6, 0.2, 1)
+light_energy = 2.0
+omni_range = 8.0
+
+[node name="WarmthArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WarmthArea"]
+shape = SubResource("SphereShape3D_warmth")

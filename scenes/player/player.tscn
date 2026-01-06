@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://bsgvk7c3e6qih"]
+
+[ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1_player"]
+[ext_resource type="Script" path="res://scripts/player/PlayerStats.cs" id="2_stats"]
+[ext_resource type="Script" path="res://scripts/player/PlayerInteraction.cs" id="3_interaction"]
+[ext_resource type="Script" path="res://scripts/systems/InventorySystem.cs" id="4_inventory"]
+[ext_resource type="Resource" uid="uid://stone_axe_item" path="res://resources/items/stone_axe.tres" id="5_axe"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+current = true
+fov = 75.0
+
+[node name="InteractionRay" type="RayCast3D" parent="Head/Camera3D"]
+target_position = Vector3(0, 0, -4)
+collision_mask = 13
+
+[node name="PlayerStats" type="Node" parent="."]
+script = ExtResource("2_stats")
+
+[node name="PlayerInteraction" type="Node" parent="."]
+script = ExtResource("3_interaction")
+
+[node name="InventorySystem" type="Node" parent="."]
+script = ExtResource("4_inventory")
+StartingItems = [{"item": ExtResource("5_axe"), "amount": 1}]

@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://rabbit_scene"]
+
+[ext_resource type="Script" path="res://scripts/ai/AnimalAI.cs" id="1_animal"]
+[ext_resource type="Resource" path="res://resources/items/raw_meat.tres" id="2_meat"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_body"]
+radius = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detection"]
+radius = 12.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fur"]
+albedo_color = Color(0.6, 0.55, 0.45, 1)
+roughness = 0.95
+
+[sub_resource type="SphereMesh" id="SphereMesh_body"]
+radius = 0.2
+height = 0.35
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+radius = 0.12
+height = 0.2
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ear"]
+radius = 0.03
+height = 0.2
+
+[node name="Rabbit" type="CharacterBody3D"]
+collision_layer = 8
+script = ExtResource("1_animal")
+Behavior = 0
+WalkSpeed = 2.0
+RunSpeed = 12.0
+DetectionRange = 12.0
+MaxHealth = 15.0
+WanderRadius = 15.0
+DropItem = ExtResource("2_meat")
+MinDropAmount = 1
+MaxDropAmount = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("SphereShape3D_body")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("SphereMesh_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.18)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="EarL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, 0.48, 0.15)
+mesh = SubResource("CapsuleMesh_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="EarR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0.48, 0.15)
+mesh = SubResource("CapsuleMesh_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detection")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5

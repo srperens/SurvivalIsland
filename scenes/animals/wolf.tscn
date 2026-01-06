@@ -1,0 +1,102 @@
+[gd_scene load_steps=10 format=3 uid="uid://wolf_scene"]
+
+[ext_resource type="Script" path="res://scripts/ai/AnimalAI.cs" id="1_animal"]
+[ext_resource type="Resource" path="res://resources/items/raw_meat.tres" id="2_meat"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.35
+height = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detection"]
+radius = 20.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fur"]
+albedo_color = Color(0.35, 0.35, 0.38, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+roughness = 0.95
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+radius = 0.3
+height = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+size = Vector3(0.25, 0.22, 0.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_leg"]
+top_radius = 0.05
+bottom_radius = 0.04
+height = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_snout"]
+size = Vector3(0.12, 0.12, 0.25)
+
+[node name="Wolf" type="CharacterBody3D"]
+collision_layer = 8
+script = ExtResource("1_animal")
+Behavior = 2
+WalkSpeed = 3.0
+RunSpeed = 10.0
+DetectionRange = 20.0
+AttackRange = 2.5
+AttackDamage = 15.0
+MaxHealth = 60.0
+WanderRadius = 40.0
+DropItem = ExtResource("2_meat")
+MinDropAmount = 1
+MaxDropAmount = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.5, 0)
+mesh = SubResource("CapsuleMesh_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.55)
+mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="Snout" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.82)
+mesh = SubResource("BoxMesh_snout")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark")
+
+[node name="LegFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.25, 0.3)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark")
+
+[node name="LegFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.25, 0.3)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark")
+
+[node name="LegBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.25, -0.3)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark")
+
+[node name="LegBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.25, -0.3)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark")
+
+[node name="Tail" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0.55, -0.55)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_fur")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detection")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 1.0
+target_desired_distance = 1.0

@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://tree_resource_scene"]
+
+[ext_resource type="Script" path="res://scripts/resources/TreeResource.cs" id="1_tree"]
+[ext_resource type="Resource" path="res://resources/items/wood.tres" id="2_wood"]
+[ext_resource type="Resource" path="res://resources/items/branch.tres" id="3_branch"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
+top_radius = 0.3
+bottom_radius = 0.4
+height = 6.0
+radial_segments = 8
+
+[sub_resource type="SphereMesh" id="SphereMesh_crown"]
+radius = 2.5
+height = 4.0
+radial_segments = 12
+rings = 8
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_collision"]
+radius = 0.5
+height = 6.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bark"]
+albedo_color = Color(0.35, 0.22, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leaves"]
+albedo_color = Color(0.15, 0.4, 0.12, 1)
+roughness = 0.8
+
+[node name="Tree" type="StaticBody3D"]
+collision_layer = 4
+script = ExtResource("1_tree")
+WoodItem = ExtResource("2_wood")
+BranchItem = ExtResource("3_branch")
+WoodAmount = 5
+BranchAmount = 3
+
+[node name="TreeMesh" type="Node3D" parent="."]
+
+[node name="Trunk" type="MeshInstance3D" parent="TreeMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_bark")
+
+[node name="Crown" type="MeshInstance3D" parent="TreeMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 0)
+mesh = SubResource("SphereMesh_crown")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaves")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("CylinderShape3D_collision")

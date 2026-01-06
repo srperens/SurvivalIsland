@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://dv8mp2jqf6hsp"]
+
+[ext_resource type="Shader" path="res://assets/shaders/terrain.gdshader" id="1_terrain_shader"]
+[ext_resource type="Script" path="res://scripts/systems/TerrainCollision.cs" id="2_collision"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_terrain"]
+noise_type = 4
+seed = 42
+frequency = 0.008
+fractal_type = 2
+fractal_octaves = 5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_terrain"]
+seamless = true
+seamless_blend_skirt = 0.2
+noise = SubResource("FastNoiseLite_terrain")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_terrain"]
+shader = ExtResource("1_terrain_shader")
+shader_parameter/height_scale = 12.0
+shader_parameter/noise_scale = 0.012
+shader_parameter/grass_color_light = Vector3(0.28, 0.52, 0.18)
+shader_parameter/grass_color_dark = Vector3(0.12, 0.32, 0.08)
+shader_parameter/dirt_color = Vector3(0.35, 0.25, 0.15)
+shader_parameter/rock_color = Vector3(0.4, 0.38, 0.35)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_terrain")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+size = Vector2(500, 500)
+subdivide_width = 200
+subdivide_depth = 200
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_water"]
+transparency = 1
+albedo_color = Color(0.1, 0.3, 0.5, 0.75)
+roughness = 0.05
+metallic = 0.3
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_river"]
+size = Vector2(60, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sand"]
+albedo_color = Color(0.76, 0.7, 0.5, 1)
+roughness = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_beach"]
+size = Vector2(25, 500)
+
+[node name="Terrain" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ground")
+surface_material_override/0 = SubResource("ShaderMaterial_terrain")
+
+[node name="TerrainCollision" type="StaticBody3D" parent="."]
+script = ExtResource("2_collision")
+TerrainSize = 500.0
+Resolution = 100
+HeightScale = 12.0
+NoiseScale = 0.012
+NoiseSeed = 42
+NoiseTexture = SubResource("NoiseTexture2D_terrain")
+
+[node name="River" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 120, 0.1, 0)
+mesh = SubResource("PlaneMesh_river")
+surface_material_override/0 = SubResource("StandardMaterial3D_water")
+
+[node name="Beach1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82, 0.05, 0)
+mesh = SubResource("PlaneMesh_beach")
+surface_material_override/0 = SubResource("StandardMaterial3D_sand")
+
+[node name="Beach2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 158, 0.05, 0)
+mesh = SubResource("PlaneMesh_beach")
+surface_material_override/0 = SubResource("StandardMaterial3D_sand")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]

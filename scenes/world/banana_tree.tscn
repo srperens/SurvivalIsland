@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=3 uid="uid://banana_tree_scene"]
+
+[ext_resource type="Script" path="res://scripts/resources/FruitTree.cs" id="1_fruittree"]
+[ext_resource type="Resource" uid="uid://banana_item" path="res://resources/items/banana.tres" id="2_banana"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trunk"]
+height = 3.0
+radius = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trunk"]
+albedo_color = Color(0.45, 0.35, 0.2, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leaves"]
+albedo_color = Color(0.2, 0.55, 0.15, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
+top_radius = 0.2
+bottom_radius = 0.3
+height = 4.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_leaf"]
+size = Vector3(0.3, 0.05, 2.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bananas"]
+albedo_color = Color(0.95, 0.85, 0.2, 1)
+roughness = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_banana"]
+radius = 0.06
+height = 0.35
+
+[node name="BananaTree" type="StaticBody3D"]
+collision_layer = 4
+script = ExtResource("1_fruittree")
+FruitItem = ExtResource("2_banana")
+MinFruit = 2
+MaxFruit = 5
+RegrowTime = 150.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("CylinderShape3D_trunk")
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="Leaf1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4.2, 0.8)
+mesh = SubResource("BoxMesh_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaves")
+
+[node name="Leaf2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.707107, 0, -0.707107, 0.353553, 0.866025, 0.353553, 0.612372, -0.5, 0.612372, 0.6, 4.2, -0.6)
+mesh = SubResource("BoxMesh_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaves")
+
+[node name="Leaf3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.707107, 0, -0.707107, -0.353553, 0.866025, 0.353553, 0.612372, 0.5, -0.612372, -0.6, 4.2, -0.4)
+mesh = SubResource("BoxMesh_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaves")
+
+[node name="Bananas" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0.3)
+
+[node name="Banana1" type="MeshInstance3D" parent="Bananas"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_banana")
+surface_material_override/0 = SubResource("StandardMaterial3D_bananas")
+
+[node name="Banana2" type="MeshInstance3D" parent="Bananas"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0.12, -0.1, 0)
+mesh = SubResource("CapsuleMesh_banana")
+surface_material_override/0 = SubResource("StandardMaterial3D_bananas")
+
+[node name="Banana3" type="MeshInstance3D" parent="Bananas"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.12, -0.1, 0)
+mesh = SubResource("CapsuleMesh_banana")
+surface_material_override/0 = SubResource("StandardMaterial3D_bananas")

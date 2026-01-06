@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://bush_scene"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_bush"]
+radius = 0.8
+height = 1.2
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bush"]
+albedo_color = Color(0.12, 0.35, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="SphereMesh_bush2"]
+radius = 0.6
+height = 0.9
+radial_segments = 6
+rings = 3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bush"]
+radius = 0.7
+
+[node name="Bush" type="StaticBody3D"]
+collision_layer = 1
+
+[node name="Leaves1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("SphereMesh_bush")
+surface_material_override/0 = SubResource("StandardMaterial3D_bush")
+
+[node name="Leaves2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.4, 0.3)
+mesh = SubResource("SphereMesh_bush2")
+surface_material_override/0 = SubResource("StandardMaterial3D_bush")
+
+[node name="Leaves3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.35, -0.2)
+mesh = SubResource("SphereMesh_bush2")
+surface_material_override/0 = SubResource("StandardMaterial3D_bush")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_bush")
